@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_100536) do
+ActiveRecord::Schema.define(version: 2019_04_24_100537) do
 
   create_table "larvata_gantt_entities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -18,4 +18,14 @@ ActiveRecord::Schema.define(version: 2019_04_24_100536) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "larvata_gantt_portfolios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "larvata_gantt_entities_id"
+    t.integer "status", default: 0, null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["larvata_gantt_entities_id"], name: "index_larvata_gantt_portfolios_on_larvata_gantt_entities_id"
+  end
+
+  add_foreign_key "larvata_gantt_portfolios", "larvata_gantt_entities", column: "larvata_gantt_entities_id"
 end
