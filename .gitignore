@@ -27,6 +27,7 @@ pickle-email-*.html
 config/initializers/secret_token.rb
 config/master.key
 .env
+.env.*
 
 ## Environment normalization:
 /.bundle
