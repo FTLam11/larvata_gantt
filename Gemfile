@@ -16,6 +16,7 @@ gemspec
 
 gem 'activerecord-import'
 gem 'dotenv-rails'
+gem 'bootsnap', require: false
 
 group :development, :test do
   gem 'awesome_print'
