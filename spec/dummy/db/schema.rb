@@ -19,13 +19,13 @@ ActiveRecord::Schema.define(version: 2019_04_24_100537) do
   end
 
   create_table "larvata_gantt_portfolios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "larvata_gantt_entities_id"
+    t.bigint "larvata_gantt_entity_id"
     t.integer "status", default: 0, null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["larvata_gantt_entities_id"], name: "index_larvata_gantt_portfolios_on_larvata_gantt_entities_id"
+    t.index ["larvata_gantt_entity_id"], name: "index_larvata_gantt_portfolios_on_larvata_gantt_entity_id"
   end
 
-  add_foreign_key "larvata_gantt_portfolios", "larvata_gantt_entities", column: "larvata_gantt_entities_id"
+  add_foreign_key "larvata_gantt_portfolios", "larvata_gantt_entities"
 end
