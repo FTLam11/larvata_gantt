@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :larvata_gantt_portfolio, class: 'LarvataGantt::Portfolio' do
+  factory :larvata_gantt_portfolio, class: 'LarvataGantt::Portfolio', aliases: [:portfolio] do
     entity
     status { 0 }
     name { 'New Gantt Engine' }
