@@ -29,3 +29,8 @@ end
 group :test do
   gem 'faker'
 end
+
+group :development do
+  gem 'spring'
+  gem 'spring-commands-rspec'
+end
