@@ -4,5 +4,7 @@ module LarvataGantt
     has_many :tasks, -> { order(:sort_order) }, class_name: 'LarvataGantt::Task',
       foreign_key: 'larvata_gantt_portfolio_id', dependent: :delete_all
 
+    validates_presence_of :name
+    validates :name, length: { maximum: 255 }
   end
 end
