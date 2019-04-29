@@ -12,5 +12,16 @@ module LarvataGantt
     def start_date
       tasks.pluck(:start_date).compact.min&.strftime('%F') || 'N/A'
     end
+
+    def as_json(*)
+      super(except: [:created_at, :updated_at]).tap do |hash|
+        aggregate = tasks.pluck(Arel.sql('avg(progress)'), Arel.sql('min(start_date)')).flatten
+        hash[:task_count] = tasks.size
+        hash[:completion_rate] = aggregate[0] || 0
+        hash[:start_date] = aggregate[1]&.strftime('%F') || 'N/A'
+        hash[:data] = tasks
+        hash[:links] = Link.for_tasks(task_ids)
+      end
+    end
   end
 end

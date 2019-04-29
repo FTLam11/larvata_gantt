@@ -57,5 +57,19 @@ module LarvataGantt
         end
       end
     end
+
+    describe '#as_json' do
+      it 'has the required keys' do
+        required_keys = %w(id entity_id name task_count completion_rate start_date data links)
+        portfolio = create(:larvata_gantt_portfolio) do |p|
+          p.tasks.create(attributes_for(:larvata_gantt_project))
+          p.tasks.create(attributes_for(:larvata_gantt_task))
+        end
+
+        result = JSON.parse(portfolio.to_json).keys
+
+        expect(result).to include(*required_keys)
+      end
+    end
   end
 end
