@@ -2,24 +2,15 @@ require_dependency "larvata_gantt/application_controller"
 
 module LarvataGantt
   class PortfoliosController < ApplicationController
-    before_action :set_portfolio, only: [:show, :edit, :update, :destroy]
+    before_action :set_portfolio, only: [:show, :update, :destroy]
 
-    # GET /portfolios
     def index
-      @portfolios = Portfolio.all
-    end
+      respond_to do |format|
+        format.html
 
     # GET /portfolios/1
     def show
-    end
-
-    # GET /portfolios/new
-    def new
-      @portfolio = Portfolio.new
-    end
-
-    # GET /portfolios/1/edit
-    def edit
+      end
     end
 
     # POST /portfolios
@@ -49,14 +40,13 @@ module LarvataGantt
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_portfolio
-        @portfolio = Portfolio.find(params[:id])
-      end
 
-      # Only allow a trusted parameter "white list" through.
-      def portfolio_params
-        params.require(:portfolio).permit(:entity_id, :status, :name)
-      end
+    def set_portfolio
+      @portfolio = Portfolio.find(params[:id])
+    end
+
+    def portfolio_params
+      params.require(:portfolio).permit(:entity_id, :name)
+    end
   end
 end

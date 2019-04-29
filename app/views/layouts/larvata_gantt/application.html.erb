@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Larvata gantt</title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>屏仕建設</title>
+    <%= stylesheet_link_tag "larvata_gantt/application", media: "all" %>
+    <%= csrf_meta_tags %>
+  </head>
 
-  <%= stylesheet_link_tag    "larvata_gantt/application", media: "all" %>
-  <%= javascript_include_tag "larvata_gantt/application" %>
-</head>
-<body>
+  <body data-locale="<%= I18n.locale %>">
+    <%= yield %>
 
-<%= yield %>
-
-</body>
+    <%= yield :post_scripts %>
+  </body>
 </html>
