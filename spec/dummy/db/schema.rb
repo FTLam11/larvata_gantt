@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_29_031603) do
+ActiveRecord::Schema.define(version: 2019_04_30_015055) do
 
   create_table "entities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "larvata_gantt_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "source_id", null: false
+    t.bigint "target_id", null: false
+    t.integer "typing", default: 0, null: false
+    t.integer "lag", default: 0, null: false
+    t.index ["source_id"], name: "index_larvata_gantt_links_on_source_id"
+    t.index ["target_id"], name: "index_larvata_gantt_links_on_target_id"
+    t.index ["typing"], name: "index_larvata_gantt_links_on_typing"
   end
 
   create_table "larvata_gantt_portfolios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -49,6 +59,8 @@ ActiveRecord::Schema.define(version: 2019_04_29_031603) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "source_id"
+  add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "target_id"
   add_foreign_key "larvata_gantt_portfolios", "entities"
   add_foreign_key "larvata_gantt_tasks", "larvata_gantt_portfolios"
   add_foreign_key "larvata_gantt_tasks", "users"
