@@ -7,7 +7,7 @@ module LarvataGantt
     validates_presence_of :name
     validates :name, length: { maximum: 255 }
 
-    scope :fully_scoped, -> { includes(:entity, tasks: [:sources, :targets]) }
+    scope :fully_scoped, -> { includes(:entity, tasks: [:sources, :targets]).order('larvata_gantt_tasks.start_date') }
 
     def start_date
       tasks.pluck(:start_date).compact.min&.strftime('%F') || 'N/A'
