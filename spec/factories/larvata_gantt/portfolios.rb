@@ -1,9 +1,9 @@
 FactoryBot.define do
-  factory :larvata_gantt_portfolio, class: 'LarvataGantt::Portfolio', aliases: [:portfolio] do
+  factory :larvata_gantt_portfolio, class: LarvataGantt::Portfolio, aliases: [:portfolio] do
     entity
     name { 'New Gantt Engine' }
 
-    factory :larvata_gantt_portfolio_with_tasks, class: 'LarvataGantt::Portfolio' do
+    factory :larvata_gantt_portfolio_with_tasks, class: LarvataGantt::Portfolio do
       transient do
         tasks_count { 3 }
       end
@@ -13,7 +13,7 @@ FactoryBot.define do
       end
     end
 
-    factory :larvata_gantt_portfolio_with_nil_start_date_tasks, class: 'LarvataGantt::Portfolio' do
+    factory :larvata_gantt_portfolio_with_nil_start_date_tasks, class: LarvataGantt::Portfolio do
       transient do
         tasks_count { 3 }
       end
