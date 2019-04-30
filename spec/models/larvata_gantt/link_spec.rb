@@ -27,5 +27,18 @@ module LarvataGantt
 
       expect { create(:link, source: project, target: project) }.to(raise_error(ActiveRecord::RecordInvalid))
     end
+
+    describe '#as_json' do
+      it 'has the required keys' do
+        required_keys = %w(id lag source target type)
+        project = create(:project)
+        child_task = create(:task, parent: project)
+
+        link = create(:link, source: project, target: child_task)
+        result = JSON.parse(link.to_json).keys
+
+        expect(result).to include(*required_keys)
+      end
+    end
   end
 end

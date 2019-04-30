@@ -12,6 +12,14 @@ module LarvataGantt
     enum typing: TYPINGS
 
 
+    def as_json(*)
+      super(only: [:id, :lag]).tap do |hash|
+        hash[:source] = source_id
+        hash[:target] = target_id
+        hash[:type] = typing_before_type_cast.to_s
+      end
+    end
+
     private
 
     def target_is_not_source
