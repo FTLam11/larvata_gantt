@@ -21,5 +21,11 @@ module LarvataGantt
       expect(link.lag).to(eq(2))
       expect { create(:link, source: project, target: child_task, lag: -1) }.to(raise_error(ActiveRecord::RecordInvalid))
     end
+
+    it 'can not have identical source and target tasks' do
+      project = create(:project)
+
+      expect { create(:link, source: project, target: project) }.to(raise_error(ActiveRecord::RecordInvalid))
+    end
   end
 end
