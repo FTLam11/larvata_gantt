@@ -11,6 +11,7 @@ module LarvataGantt
     TYPINGS = %i(finish_to_start start_to_start finish_to_finish start_to_finish).freeze
     enum typing: TYPINGS
 
+    scope :for_tasks, -> (task_ids) { where(source_id: task_ids).or(where(target_id: task_ids)) }
 
     def as_json(*)
       super(only: [:id, :lag]).tap do |hash|
