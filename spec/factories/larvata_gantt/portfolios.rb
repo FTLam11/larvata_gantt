@@ -19,7 +19,7 @@ FactoryBot.define do
       end
 
       after(:create) do |portfolio, evaluator|
-        create_list(:larvata_gantt_task, evaluator.tasks_count, portfolio: portfolio, start_date: nil)
+        create_list(:project, evaluator.tasks_count, portfolio: portfolio, start_date: nil)
       end
     end
   end
