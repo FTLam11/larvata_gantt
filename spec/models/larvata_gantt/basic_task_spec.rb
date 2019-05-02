@@ -2,6 +2,8 @@ require 'rails_helper'
 
 module LarvataGantt
   RSpec.describe(BasicTask, type: :model) do
+    let(:invalid_length_min) { 256 }
+
     it 'belongs to a portfolio' do
       task = build(:larvata_gantt_task)
 
@@ -24,11 +26,10 @@ module LarvataGantt
 
     it 'has a text description' do
       task = create(:task, text: 'Take out the trash')
-      INVALID_LENGTH_MIN = 256
 
       expect(task.text).to(eq('Take out the trash'))
       expect { create(:task, text: '') }.to(raise_error(ActiveRecord::RecordInvalid))
-      expect { create(:task, text: 'F' * INVALID_LENGTH_MIN) }.to(raise_error(ActiveRecord::RecordInvalid))
+      expect { create(:task, text: 'F' * invalid_length_min) }.to(raise_error(ActiveRecord::RecordInvalid))
     end
 
     it 'has a sort order' do

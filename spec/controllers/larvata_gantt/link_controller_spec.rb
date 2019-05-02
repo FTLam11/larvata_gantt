@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module LarvataGantt
   RSpec.describe(LinkController, type: :request) do
-    HEADERS = { 'ACCEPT': 'application/json' }
+    let(:headers) { { 'ACCEPT': 'application/json' } }
 
     describe 'POST #create' do
       context 'with valid source and target' do
@@ -11,7 +11,7 @@ module LarvataGantt
           task = create(:task)
           params = { source: project.id, target: task.id, type: Link.typings[:finish_to_finish].to_s }
 
-          post '/larvata_gantt/link', params: params, headers: HEADERS
+          post '/larvata_gantt/link', params: params, headers: headers
           body_content = JSON.parse(response.body)
           created_link = Link.where(source: project, target: task, typing: params[:type]).last
 
@@ -26,7 +26,7 @@ module LarvataGantt
           params = { source: task.id, target: task.id, type: Link.typings[:finish_to_finish].to_s }
           link_count = Link.count
 
-          post '/larvata_gantt/link', params: params, headers: HEADERS
+          post '/larvata_gantt/link', params: params, headers: headers
           body_content = JSON.parse(response.body)
 
           expect(Link.count).to(eq(link_count))
@@ -43,7 +43,7 @@ module LarvataGantt
         new_target = create(:task)
         params = { source: link.source.id, target: new_target.id, type: Link.typings[:finish_to_finish].to_s }
 
-        patch "/larvata_gantt/link/#{link.id}", params: params, headers: HEADERS
+        patch "/larvata_gantt/link/#{link.id}", params: params, headers: headers
         body_content = JSON.parse(response.body)
 
         expect(link.reload.target.id).to(eq(new_target.id))
@@ -57,7 +57,7 @@ module LarvataGantt
       it 'destroys a link' do
         link = create(:link)
 
-        delete "/larvata_gantt/link/#{link.id}", headers: HEADERS
+        delete "/larvata_gantt/link/#{link.id}", headers: headers
         body_content = JSON.parse(response.body)
 
         expect { link.reload }.to(raise_error(ActiveRecord::RecordNotFound))
