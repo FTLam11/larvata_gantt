@@ -8,18 +8,7 @@ module LarvataGantt
       respond_to do |format|
         format.html
         format.json do
-          portfolios = Portfolio.fully_scoped.map do |portfolio|
-            {
-              id: portfolio.id,
-              name: portfolio.name,
-              entity_name: portfolio.entity.name,
-              entity_id: portfolio.entity.id,
-              task_count: portfolio.tasks.size,
-              start_date: portfolio.start_date,
-            }
-          end
-
-          render json: { portfolios: portfolios }
+          render json: { portfolios: Portfolio.fully_scoped.map { |portfolio| serialize(portfolio) } }
         end
       end
     end
@@ -28,14 +17,7 @@ module LarvataGantt
       respond_to do |format|
         format.json do
           portfolio = Portfolio.create(portfolio_params)
-          render json: { message: '成功儲存', portfolio: {
-            id: portfolio.id,
-            name: portfolio.name,
-            entity_name: portfolio.entity.name,
-            entity_id: portfolio.entity.id,
-            task_count: 0,
-            start_date: 'N/A',
-          } }, status: 201
+          render json: { message: '成功儲存', portfolio: serialize(portfolio) }, status: 201
         end
       end
     end
@@ -70,6 +52,17 @@ module LarvataGantt
 
     def portfolio_params
       params.require(:portfolio).permit(:entity_id, :name)
+    end
+
+    def serialize(portfolio)
+      {
+        id: portfolio.id,
+        name: portfolio.name,
+        entity_name: portfolio.entity.name,
+        entity_id: portfolio.entity.id,
+        task_count: portfolio.tasks.size,
+        start_date: portfolio.start_date,
+      }
     end
   end
 end
