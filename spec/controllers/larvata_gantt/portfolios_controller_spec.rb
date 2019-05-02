@@ -72,5 +72,21 @@ module LarvataGantt
         end
       end
     end
+
+    describe 'PATCH #update' do
+      it 'updates a portfolio' do
+        portfolio = create(:larvata_gantt_portfolio_with_tasks)
+        new_name = 'New portfolio name'
+        params = { portfolio: { name: new_name } }
+
+        patch "/larvata_gantt/portfolios/#{portfolio.id}", params: params, headers: HEADERS
+        body_content_keys = JSON.parse(response.body)["portfolio"].keys
+
+        expect(portfolio.reload.name).to(eq(new_name))
+        expect(response.status).to(eq(200))
+        expect(response.content_type).to(eq('application/json'))
+        expect(body_content_keys).to(include(*RESPONSE_KEYS))
+      end
+    end
   end
 end

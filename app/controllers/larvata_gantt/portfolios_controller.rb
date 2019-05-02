@@ -29,12 +29,12 @@ module LarvataGantt
       end
     end
 
-    # PATCH/PUT /portfolios/1
     def update
-      if @portfolio.update(portfolio_params)
-        redirect_to @portfolio, notice: 'Portfolio was successfully updated.'
-      else
-        render :edit
+      respond_to do |format|
+        format.json do
+          @portfolio.update(portfolio_params)
+          render json: { message: '成功更新', portfolio: serialize(@portfolio) }
+        end
       end
     end
 
