@@ -18,8 +18,8 @@ module LarvataGantt
 
     def update
       if @link.update(source_id: link_params[:source],
-          target_id: link_params[:target],
-          typing: link_params[:type].to_i)
+                      target_id: link_params[:target],
+                      typing: link_params[:type].to_i)
         render json: { action: "updated" }
       else
         render json: { action: "error", message: @link.errors.full_messages }, status: 400
