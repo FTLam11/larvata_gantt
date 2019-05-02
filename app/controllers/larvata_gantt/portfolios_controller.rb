@@ -7,9 +7,20 @@ module LarvataGantt
     def index
       respond_to do |format|
         format.html
+        format.json do
+          portfolios = Portfolio.fully_scoped.map do |portfolio|
+            {
+              id: portfolio.id,
+              name: portfolio.name,
+              entity: portfolio.entity.name,
+              entity_id: portfolio.entity.id,
+              task_count: portfolio.tasks.size,
+              start_date: portfolio.start_date,
+            }
+          end
 
-    # GET /portfolios/1
-    def show
+          render json: { portfolios: portfolios }
+        end
       end
     end
 
