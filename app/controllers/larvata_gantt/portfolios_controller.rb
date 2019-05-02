@@ -12,7 +12,7 @@ module LarvataGantt
             {
               id: portfolio.id,
               name: portfolio.name,
-              entity: portfolio.entity.name,
+              entity_name: portfolio.entity.name,
               entity_id: portfolio.entity.id,
               task_count: portfolio.tasks.size,
               start_date: portfolio.start_date,
@@ -31,7 +31,7 @@ module LarvataGantt
           render json: { message: '成功儲存', portfolio: {
             id: portfolio.id,
             name: portfolio.name,
-            entity: portfolio.entity.name,
+            entity_name: portfolio.entity.name,
             entity_id: portfolio.entity.id,
             task_count: 0,
             start_date: 'N/A',
@@ -40,10 +40,10 @@ module LarvataGantt
       end
     end
 
-      if @portfolio.save
-        redirect_to @portfolio, notice: 'Portfolio was successfully created.'
-      else
-        render :new
+    def show
+      respond_to do |format|
+        format.html { render :index }
+        format.json { render json: @portfolio }
       end
     end
 
