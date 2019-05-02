@@ -24,9 +24,21 @@ module LarvataGantt
       end
     end
 
-    # POST /portfolios
     def create
-      @portfolio = Portfolio.new(portfolio_params)
+      respond_to do |format|
+        format.json do
+          portfolio = Portfolio.create(portfolio_params)
+          render json: { message: '成功儲存', portfolio: {
+            id: portfolio.id,
+            name: portfolio.name,
+            entity: portfolio.entity.name,
+            entity_id: portfolio.entity.id,
+            task_count: 0,
+            start_date: 'N/A',
+          } }, status: 201
+        end
+      end
+    end
 
       if @portfolio.save
         redirect_to @portfolio, notice: 'Portfolio was successfully created.'

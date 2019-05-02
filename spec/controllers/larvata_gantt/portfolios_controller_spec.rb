@@ -2,6 +2,9 @@ require 'rails_helper'
 
 module LarvataGantt
   RSpec.describe(PortfoliosController, type: :request) do
+    RESPONSE_KEYS = %w(id name entity entity_id task_count start_date)
+    HEADERS = { 'ACCEPT': 'application/json' }
+
     describe 'GET portfolios#index' do
       context 'when requesting html' do
         it 'renders the portfolio index' do
@@ -18,16 +21,27 @@ module LarvataGantt
       context 'when requesting json' do
         it 'responds with portfolio data' do
           create(:larvata_gantt_portfolio_with_tasks)
-          headers = { 'ACCEPT': 'application/json' }
-          response_keys = %w(id name entity entity_id task_count start_date)
 
-          get '/larvata_gantt/portfolios', headers: headers
+          get '/larvata_gantt/portfolios', headers: HEADERS
           body_content_keys = JSON.parse(response.body)["portfolios"].first.keys
 
           expect(response.status).to(eq(200))
           expect(response.content_type).to(eq('application/json'))
-          expect(body_content_keys).to(include(*response_keys))
+          expect(body_content_keys).to(include(*RESPONSE_KEYS))
         end
+      end
+    end
+
+    describe 'POST #create' do
+      it 'creates a portfolio' do
+        entity = create(:entity)
+        params = { portfolio: { entity_id: entity.id, name: entity.name } }
+
+        post '/larvata_gantt/portfolios', params: params, headers: HEADERS
+        body_content_keys = JSON.parse(response.body)["portfolio"].keys
+
+        expect(response.status).to(eq(201))
+        expect(body_content_keys).to(include(*RESPONSE_KEYS))
       end
     end
   end
