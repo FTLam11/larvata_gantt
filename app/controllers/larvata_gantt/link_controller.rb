@@ -17,26 +17,18 @@ module LarvataGantt
     end
 
     def update
-      respond_to do |format|
-        format.json do
-          if @link.update(source_id: link_params[:source],
-                          target_id: link_params[:target],
-                          typing: link_params[:type].to_i)
-            render json: { action: "updated" }
-          else
-            render json: { action: "error", message: @link.errors.full_messages }, status: 400
-          end
-        end
+      if @link.update(source_id: link_params[:source],
+          target_id: link_params[:target],
+          typing: link_params[:type].to_i)
+        render json: { action: "updated" }
+      else
+        render json: { action: "error", message: @link.errors.full_messages }, status: 400
       end
     end
 
     def destroy
-      respond_to do |format|
-        format.json do
-          @link.destroy
-          render json: { action: "deleted" }
-        end
-      end
+      @link.destroy
+      render json: { action: "deleted" }
     end
 
     private
