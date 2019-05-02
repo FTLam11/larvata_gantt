@@ -88,5 +88,16 @@ module LarvataGantt
         expect(body_content_keys).to(include(*RESPONSE_KEYS))
       end
     end
+
+    describe 'DELETE #destroy' do
+      it 'destroys a portfolio' do
+        portfolio = create(:larvata_gantt_portfolio_with_tasks)
+
+        delete "/larvata_gantt/portfolios/#{portfolio.id}", headers: HEADERS
+
+        expect { portfolio.reload }.to(raise_error(ActiveRecord::RecordNotFound))
+        expect(response.status).to(eq(204))
+      end
+    end
   end
 end

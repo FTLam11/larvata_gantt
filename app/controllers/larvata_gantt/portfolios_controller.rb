@@ -38,10 +38,13 @@ module LarvataGantt
       end
     end
 
-    # DELETE /portfolios/1
     def destroy
-      @portfolio.destroy
-      redirect_to portfolios_url, notice: 'Portfolio was successfully destroyed.'
+      respond_to do |format|
+        format.json do
+          @portfolio.destroy
+          head :no_content
+        end
+      end
     end
 
     private
