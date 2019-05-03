@@ -28,13 +28,22 @@ module LarvataGantt
         end
       end
 
+      def update(attrs)
+        unless SPEC.keys.include?(attrs[:type])
+          raise ArgumentError, "#{attrs[:type]} is not a valid typing"
+        end
+
+        BasicTask.update_attrs(attrs[:id], build_attrs_for(attrs))
+      end
+
+      private
+
       def build_attrs_for(attrs, model_field = "type")
         attrs.to_h.tap do |h|
           h["typing"] = h["type"]
           h["priority"] = h["priority"]&.downcase
         end.select { |k, _| SPEC[attrs[model_field]]&.include?(k) }
       end
-
     end
   end
 end
