@@ -7,12 +7,14 @@ module LarvataGantt
       "meeting" => %w(text typing portfolio_id start_date end_date details),
     }.freeze
 
-    class << self
-      ADD_TYPING_ERROR = lambda do |task, attr|
-        task.valid?
-        task.errors.add(:typing, "#{attr} is not a valid typing")
-      end
+    ADD_TYPING_ERROR = lambda do |task, attr|
+      task.valid?
+      task.errors.add(:typing, "#{attr} is not a valid typing")
+    end
 
+    private_constant :SPEC, :ADD_TYPING_ERROR
+
+    class << self
       def build(attrs, model_field = :type)
         build_attrs = build_attrs_for(attrs, model_field)
 
