@@ -58,6 +58,15 @@ module LarvataGantt
 
         expect(BasicTask).to(have_received(:update_attrs).with(task.id, TaskFactory.send(:build_attrs_for, new_attrs)))
       end
+
+      it 'assigns a typing validation error when given a bogus type' do
+        task = create(:task)
+        new_attrs = { id: task.id, text: 'Dawg', type: 'crazy type' }
+
+        task = TaskFactory.update(new_attrs)
+
+        expect(task.errors.full_messages).to(include('Typing crazy type is not a valid typing'))
+      end
     end
   end
 end

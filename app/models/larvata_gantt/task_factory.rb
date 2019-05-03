@@ -8,6 +8,11 @@ module LarvataGantt
     }.freeze
 
     class << self
+      ADD_TYPING_ERROR = lambda do |task, attr|
+        task.valid?
+        task.errors.add(:typing, "#{attr} is not a valid typing")
+      end
+
       def build(attrs, model_field = :type)
         build_attrs = build_attrs_for(attrs, model_field)
 
@@ -21,19 +26,16 @@ module LarvataGantt
         when "meeting"
           Meeting.new(build_attrs)
         else
-          Task.new(build_attrs).tap do |t|
-            t.valid?
-            t.errors.add(:typing, "#{attrs[model_field]} is not a valid typing")
-          end
+          Task.new(build_attrs).tap { |t| ADD_TYPING_ERROR.call(t, attrs[model_field]) }
         end
       end
 
       def update(attrs)
-        unless SPEC.keys.include?(attrs[:type])
-          raise ArgumentError, "#{attrs[:type]} is not a valid typing"
+        if SPEC.keys.include?(attrs[:type])
+          BasicTask.update_attrs(attrs[:id], build_attrs_for(attrs))
+        else
+          Task.find(attrs[:id]).tap { |t| ADD_TYPING_ERROR.call(t, attrs[:type]) }
         end
-
-        BasicTask.update_attrs(attrs[:id], build_attrs_for(attrs))
       end
 
       private
