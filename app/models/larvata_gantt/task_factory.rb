@@ -32,20 +32,29 @@ module LarvataGantt
         end
       end
 
-      def update(attrs)
-        if SPEC.keys.include?(attrs[:type])
-          BasicTask.update_attrs(attrs[:id], build_attrs_for(attrs))
+      def update(attrs, model_field = :type)
+        build_attrs = build_attrs_for(attrs, model_field)
+
+        case attrs[model_field]
+        when "project"
+          Project.update_attrs(attrs[:id], build_attrs)
+        when "task"
+          Task.update_attrs(attrs[:id], build_attrs)
+        when "milestone"
+          Milestone.update_attrs(attrs[:id], build_attrs)
+        when "meeting"
+          Meeting.update_attrs(attrs[:id], build_attrs)
         else
-          Task.find(attrs[:id]).tap { |t| ADD_TYPING_ERROR.call(t, attrs[:type]) }
+          Task.new(build_attrs).tap { |t| ADD_TYPING_ERROR.call(t, attrs[:type]) }
         end
       end
 
       private
 
-      def build_attrs_for(attrs, model_field = "type")
+      def build_attrs_for(attrs, model_field = :type)
         attrs.to_h.tap do |h|
-          h["typing"] = h["type"]
-          h["priority"] = h["priority"]&.downcase
+          h[:typing] = h[:type]
+          h[:priority] = h[:priority]&.downcase
         end.select { |k, _| SPEC[attrs[model_field]]&.include?(k) }
       end
     end

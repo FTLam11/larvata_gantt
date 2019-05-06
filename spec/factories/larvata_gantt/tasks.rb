@@ -7,7 +7,7 @@ FactoryBot.define do
     sort_order { 1 }
     parent { nil }
     typing { 0 }
-    priority { 1 }
+    priority { 'normal' }
     progress { 0 }
     end_date { nil }
     start_date { nil }

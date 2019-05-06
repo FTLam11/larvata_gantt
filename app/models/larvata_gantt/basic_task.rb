@@ -19,6 +19,10 @@ module LarvataGantt
       post_initialize(attrs)
     end
 
+    def self.update_attrs(id, build_attrs)
+      find(id).tap { |obj| obj.assign_attributes(build_attrs) }
+    end
+
 
     def post_initialize(*)
       nil
