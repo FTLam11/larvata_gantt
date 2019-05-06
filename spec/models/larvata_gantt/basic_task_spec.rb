@@ -5,13 +5,13 @@ module LarvataGantt
     let(:invalid_length_min) { 256 }
 
     it 'belongs to a portfolio' do
-      task = build(:larvata_gantt_task)
+      task = build(:task)
 
       expect(task.portfolio).to_not(be(nil))
     end
 
     it 'may be owner-less' do
-      task = build(:larvata_gantt_task)
+      task = build(:task)
 
       expect(task.owner).to(be(nil))
     end
@@ -19,7 +19,7 @@ module LarvataGantt
     it 'may be belong to an owner' do
       owner = build(:owner)
 
-      task = build(:larvata_gantt_task, owner: owner)
+      task = build(:task, owner: owner)
 
       expect(task.owner).to(be(owner))
     end
