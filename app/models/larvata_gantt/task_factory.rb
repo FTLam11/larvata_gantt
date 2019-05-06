@@ -1,18 +1,19 @@
 module LarvataGantt
   class TaskFactory
+    BASE = %w(text larvata_gantt_portfolio_id typing parent).freeze
     SPEC = {
-      "project" => %w(text typing priority progress larvata_gantt_portfolio_id parent),
-      "task" => %w(text typing priority progress larvata_gantt_portfolio_id start_date end_date parent),
-      "milestone" => %w(text typing larvata_gantt_portfolio_id start_date end_date parent),
-      "meeting" => %w(text typing larvata_gantt_portfolio_id start_date end_date details parent),
-    }.freeze
+      "project"   => %w(priority progress),
+      "task"      => %w(priority progress start_date end_date),
+      "milestone" => %w(start_date end_date),
+      "meeting"   => %w(start_date end_date details),
+    }.map { |type, attrs| [type, attrs.concat(BASE)] }.to_h.freeze
 
     ADD_TYPING_ERROR = lambda do |task, attr|
       task.valid?
       task.errors.add(:typing, "#{attr} is not a valid typing")
     end
 
-    private_constant :SPEC, :ADD_TYPING_ERROR
+    private_constant :ADD_TYPING_ERROR
 
     class << self
       def build(attrs, model_field = :type)
