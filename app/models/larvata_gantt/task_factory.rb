@@ -1,10 +1,10 @@
 module LarvataGantt
   class TaskFactory
     SPEC = {
-      "project" => %w(text typing priority progress portfolio_id ancestry),
-      "task" => %w(text typing priority progress portfolio_id start_date end_date ancestry),
-      "milestone" => %w(text typing portfolio_id start_date end_date),
-      "meeting" => %w(text typing portfolio_id start_date end_date details),
+      "project" => %w(text typing priority progress larvata_gantt_portfolio_id ancestry),
+      "task" => %w(text typing priority progress larvata_gantt_portfolio_id start_date end_date ancestry),
+      "milestone" => %w(text typing larvata_gantt_portfolio_id start_date end_date),
+      "meeting" => %w(text typing larvata_gantt_portfolio_id start_date end_date details),
     }.freeze
 
     ADD_TYPING_ERROR = lambda do |task, attr|
