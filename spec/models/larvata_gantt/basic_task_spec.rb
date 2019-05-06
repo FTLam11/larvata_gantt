@@ -28,7 +28,13 @@ module LarvataGantt
       task = create(:task, text: 'Take out the trash')
 
       expect(task.text).to(eq('Take out the trash'))
+    end
+
+    it 'does not have a blank text description' do
       expect { create(:task, text: '') }.to(raise_error(ActiveRecord::RecordInvalid))
+    end
+
+    it 'has a valid text length' do
       expect { create(:task, text: 'F' * invalid_length_min) }.to(raise_error(ActiveRecord::RecordInvalid))
     end
 
@@ -36,7 +42,13 @@ module LarvataGantt
       task = create(:task, sort_order: 2)
 
       expect(task.sort_order).to(eq(2))
+    end
+
+    it 'does not have a blank sort order' do
       expect { create(:task, sort_order: nil) }.to(raise_error(ActiveRecord::RecordInvalid))
+    end
+
+    it 'has a valid sort order' do
       expect { create(:task, sort_order: -1) }.to(raise_error(ActiveRecord::RecordInvalid))
     end
   end
