@@ -1,10 +1,10 @@
 module LarvataGantt
   class TaskFactory
     SPEC = {
-      "project" => %w(text typing priority progress larvata_gantt_portfolio_id ancestry),
-      "task" => %w(text typing priority progress larvata_gantt_portfolio_id start_date end_date ancestry),
-      "milestone" => %w(text typing larvata_gantt_portfolio_id start_date end_date),
-      "meeting" => %w(text typing larvata_gantt_portfolio_id start_date end_date details),
+      "project" => %w(text typing priority progress larvata_gantt_portfolio_id parent),
+      "task" => %w(text typing priority progress larvata_gantt_portfolio_id start_date end_date parent),
+      "milestone" => %w(text typing larvata_gantt_portfolio_id start_date end_date parent),
+      "meeting" => %w(text typing larvata_gantt_portfolio_id start_date end_date details parent),
     }.freeze
 
     ADD_TYPING_ERROR = lambda do |task, attr|
@@ -54,7 +54,7 @@ module LarvataGantt
       def build_attrs_for(attrs, model_field = :type)
         attrs.to_h.tap do |h|
           h[:typing] = h[:type]
-          h[:priority] = h[:priority]&.downcase
+          h[:priority] = h[:priority]&.downcase if h[:priority].present?
         end.select { |k, _| SPEC[attrs[model_field]]&.include?(k) }
       end
     end
