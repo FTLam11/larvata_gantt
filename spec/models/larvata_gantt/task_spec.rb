@@ -1,25 +1,34 @@
 require 'rails_helper'
 
 module LarvataGantt
-  RSpec.describe Task, type: :model do
-    it 'belongs to a portfolio' do
-      task = build(:larvata_gantt_task)
+  RSpec.describe(Task, type: :model) do
+    it 'has a priority' do
+      task = build(:task, priority: 'low')
 
-      expect(task.portfolio).to_not be nil
+      expect(task.priority).to(eq('low'))
     end
 
-    it 'may be owner-less' do
-      task = build(:larvata_gantt_task)
+    it 'has a valid progress' do
+      task = build(:task, progress: 77)
 
-      expect(task.owner).to be nil
+      expect(task.progress).to(eq(77))
+      expect { create(:task, progress: -2) }.to(raise_error(ActiveRecord::RecordInvalid))
+      expect { create(:task, progress: 101) }.to(raise_error(ActiveRecord::RecordInvalid))
     end
 
-    it 'may be belong to an owner' do
-      owner = build(:owner)
+    it 'has a start date' do
+      start_date = Time.zone.now.to_s
+      task = build(:task, start_date: start_date)
 
-      task = build(:larvata_gantt_task, owner: owner)
+      expect(task.start_date).to(eq(start_date))
+      expect { create(:task, start_date: nil) }.to(raise_error(ActiveRecord::RecordInvalid))
+    end
 
-      expect(task.owner).to be(owner)
+    it 'has a valid end date' do
+      start_date = Time.zone.now
+      end_date = 1.days.ago
+
+      expect { create(:task, start_date: start_date, end_date: end_date) }.to(raise_error(ActiveRecord::RecordInvalid))
     end
   end
 end
