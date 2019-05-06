@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_015055) do
+ActiveRecord::Schema.define(version: 2019_05_06_094129) do
 
   create_table "entities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_015055) do
     t.string "text", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "details"
     t.index ["larvata_gantt_portfolio_id"], name: "index_larvata_gantt_tasks_on_larvata_gantt_portfolio_id"
     t.index ["user_id"], name: "index_larvata_gantt_tasks_on_user_id"
   end
