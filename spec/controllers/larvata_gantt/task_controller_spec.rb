@@ -114,6 +114,41 @@ module LarvataGantt
         expect(body_content['action']).to(eq('updated'))
       end
 
+      context 'with task ordering' do
+        it 'can insert a task before a target task' do
+          portfolio = create(:portfolio)
+          target_task = create(:task, portfolio: portfolio, sort_order: 1)
+          current_task = create(:task, portfolio: portfolio, sort_order: 2)
+          params = { start_date: '2019-04-09', text: 'New task text', end_date: '2019-04-14',
+                     progress: 0, parent: 0, type: 'task', priority: 'High', target: target_task.id }
+
+          patch "/larvata_gantt/task/#{current_task.id}", headers: headers, params: params, as: :json
+          body_content = JSON.parse(response.body)
+
+          expect(current_task.reload.sort_order).to(eq(1))
+          expect(target_task.reload.sort_order).to(eq(2))
+          expect(response.status).to(eq(200))
+          expect(response.content_type).to(eq('application/json'))
+          expect(body_content['action']).to(eq('updated'))
+        end
+
+        it 'can insert a task after a target task' do
+          portfolio = create(:portfolio)
+          current_task = create(:task, portfolio: portfolio, sort_order: 1)
+          target_task = create(:task, portfolio: portfolio, sort_order: 2)
+          params = { start_date: '2019-04-09', text: 'New task text', end_date: '2019-04-14',
+                     progress: 0, parent: 0, type: 'task', priority: 'High', target: "next:#{target_task.id}" }
+
+          patch "/larvata_gantt/task/#{current_task.id}", headers: headers, params: params, as: :json
+          body_content = JSON.parse(response.body)
+
+          expect(current_task.reload.sort_order).to(eq(3))
+          expect(target_task.reload.sort_order).to(eq(2))
+          expect(response.status).to(eq(200))
+          expect(response.content_type).to(eq('application/json'))
+          expect(body_content['action']).to(eq('updated'))
+        end
+      end
     end
 
     describe 'DELETE #destroy' do

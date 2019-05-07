@@ -23,6 +23,26 @@ module LarvataGantt
       find(id).tap { |obj| obj.assign_attributes(build_attrs) }
     end
 
+    def self.reorder(task, target)
+      return false if target.nil?
+
+      if target.is_a?(String) # target is integer or "next:23"/"next:null"
+        return false if target.end_with?("null")
+
+        target_id = target[5..-1]
+        task.update(sort_order: find(target_id).sort_order + 1)
+      else
+        task.update(sort_order: find(target).sort_order)
+      end
+
+      remaining = where.not(id: task.id).where('sort_order >= ?', task.sort_order).map do |t|
+        t.sort_order += 1
+        t
+      end
+
+      import(remaining, on_duplicate_key_update: [:sort_order])
+    end
+
 
     def post_initialize(*)
       nil
