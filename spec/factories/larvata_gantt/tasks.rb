@@ -26,4 +26,17 @@ FactoryBot.define do
     typing { 1 }
     text { 'Project Operation Diam La' }
   end
+
+  factory :larvata_gantt_milestone, class: LarvataGantt::Milestone,
+    parent: :basic_task, aliases: [:milestone] do
+    typing { 2 }
+    text { '50 percent check in' }
+  end
+
+  factory :larvata_gantt_meeting, class: LarvataGantt::Meeting,
+    parent: :basic_task, aliases: [:meeting] do
+    typing { 3 }
+    text { 'Pointless meeting' }
+    details { 'Blah blah blah' }
+  end
 end
