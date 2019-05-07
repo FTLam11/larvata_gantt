@@ -12,7 +12,7 @@ module LarvataGantt
 
         post '/larvata_gantt/task', params: params, headers: headers
         body_content = JSON.parse(response.body)
-        created_task = Task.where(portfolio: portfolio).last
+        created_task = portfolio.tasks.last
 
         expect(response.status).to(eq(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
@@ -20,12 +20,11 @@ module LarvataGantt
 
       it 'creates a project' do
         portfolio = create(:portfolio)
-        params = { start_date: '2019-04-09', text: 'The jets', end_date: '2019-04-10',
-                   progress: 0, parent: 0, type: 'project', larvata_gantt_portfolio_id: portfolio.id }
+        params = { text: 'The jets', progress: 0, parent: 0, type: 'project', larvata_gantt_portfolio_id: portfolio.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
         body_content = JSON.parse(response.body)
-        created_task = Task.where(portfolio: portfolio).last
+        created_task = portfolio.tasks.last
 
         expect(response.status).to(eq(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
@@ -33,13 +32,12 @@ module LarvataGantt
 
       it 'creates a meeting' do
         portfolio = create(:portfolio)
-        params = { start_date: '2019-04-09', text: 'Meeting about nothing',
-                   end_date: '2019-04-12', progress: 0, parent: 0, details: 'Blah blah blah',
-                   type: 'meeting', larvata_gantt_portfolio_id: portfolio.id }
+        params = { start_date: '2019-04-09', text: 'Meeting about nothing', end_date: '2019-04-12', parent: 0,
+                   details: 'Blah blah blah', type: 'meeting', larvata_gantt_portfolio_id: portfolio.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
         body_content = JSON.parse(response.body)
-        created_task = Task.where(portfolio: portfolio).last
+        created_task = portfolio.tasks.last
 
         expect(response.status).to(eq(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
@@ -53,7 +51,7 @@ module LarvataGantt
 
         post '/larvata_gantt/task', params: params, headers: headers
         body_content = JSON.parse(response.body)
-        created_task = Task.where(portfolio: portfolio).last
+        created_task = portfolio.tasks.last
 
         expect(response.status).to(eq(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
@@ -63,7 +61,8 @@ module LarvataGantt
     describe 'PATCH #update' do
       it 'updates a task' do
         task = create(:task)
-        params = { text: 'New task text', type: 'project', priority: 'low' }
+        params = { start_date: '2019-04-09', text: 'New task text', end_date: '2019-04-14',
+                   progress: 0, parent: 0, type: 'task', priority: 'High' }
 
         patch "/larvata_gantt/task/#{task.id}", params: params, headers: headers
         body_content = JSON.parse(response.body)
@@ -73,6 +72,48 @@ module LarvataGantt
         expect(response.content_type).to(eq('application/json'))
         expect(body_content['action']).to(eq('updated'))
       end
+
+      it 'updates a project' do
+        project = create(:project)
+        params = { text: 'The jets', progress: 0, parent: 0, type: 'project' }
+
+        patch "/larvata_gantt/task/#{project.id}", params: params, headers: headers
+        body_content = JSON.parse(response.body)
+
+        expect(project.reload.text).to(eq(params[:text]))
+        expect(response.status).to(eq(200))
+        expect(response.content_type).to(eq('application/json'))
+        expect(body_content['action']).to(eq('updated'))
+      end
+
+      it 'updates a meeting' do
+        meeting = create(:meeting)
+        params = { start_date: '2019-04-09', text: 'Meeting about nothing', end_date: '2019-04-12', parent: 0,
+                   details: 'Blah blah blah', type: 'meeting' }
+
+        patch "/larvata_gantt/task/#{meeting.id}", params: params, headers: headers
+        body_content = JSON.parse(response.body)
+
+        expect(meeting.reload.text).to(eq(params[:text]))
+        expect(response.status).to(eq(200))
+        expect(response.content_type).to(eq('application/json'))
+        expect(body_content['action']).to(eq('updated'))
+      end
+
+      it 'updates a milestone' do
+        milestone = create(:milestone)
+        params = { start_date: '2019-04-12', text: '50% building milestone',
+                   end_date: '2019-04-12', progress: 0, parent: 0, type: 'milestone' }
+
+        patch "/larvata_gantt/task/#{milestone.id}", params: params, headers: headers
+        body_content = JSON.parse(response.body)
+
+        expect(milestone.reload.text).to(eq(params[:text]))
+        expect(response.status).to(eq(200))
+        expect(response.content_type).to(eq('application/json'))
+        expect(body_content['action']).to(eq('updated'))
+      end
+
     end
 
     describe 'DELETE #destroy' do
