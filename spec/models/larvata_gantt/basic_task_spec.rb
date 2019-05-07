@@ -51,5 +51,14 @@ module LarvataGantt
     it 'has a valid sort order' do
       expect { create(:task, sort_order: -1) }.to(raise_error(ActiveRecord::RecordInvalid))
     end
+
+    it 'has many links' do
+      first_task = create(:task)
+      second_task = create(:task)
+      link = create(:link, source: first_task, target: second_task)
+
+      expect(first_task.links).to(include(link))
+      expect(second_task.links).to(include(link))
+    end
   end
 end

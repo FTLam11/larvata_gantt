@@ -43,6 +43,10 @@ module LarvataGantt
       import(remaining, on_duplicate_key_update: [:sort_order])
     end
 
+    def links
+      Link.where("source_id = ? OR target_id = ?", id, id)
+    end
+
 
     def post_initialize(*)
       nil
