@@ -8,7 +8,9 @@ module LarvataGantt
 
       expect(portfolio.name).to(eq('Diversify yo bonds'))
       expect { create(:larvata_gantt_portfolio, name: '') }.to(raise_error(ActiveRecord::RecordInvalid))
-      expect { create(:larvata_gantt_portfolio, name: 'F' * INVALID_LENGTH_MIN) }.to(raise_error(ActiveRecord::RecordInvalid))
+      expect do
+        create(:larvata_gantt_portfolio, name: 'F' * INVALID_LENGTH_MIN)
+      end.to(raise_error(ActiveRecord::RecordInvalid))
     end
 
     it 'has many tasks' do
@@ -37,7 +39,7 @@ module LarvataGantt
       context 'with tasks that all have start_dates' do
         it 'returns the earliest start_date' do
           portfolio = create(:larvata_gantt_portfolio_with_tasks)
-          result = portfolio.tasks.order(:start_date).first.start_date.strftime('%F')
+          result = portfolio.tasks.order(:start_date).first.start_date.to_s(:f)
 
           expect(portfolio.start_date).to(eq(result))
         end
@@ -51,7 +53,7 @@ module LarvataGantt
           end
 
           result = portfolio.tasks.where.not(start_date: nil)
-            .order(:start_date).first.start_date.strftime('%F')
+            .order(:start_date).first.start_date.to_s(:f)
 
           expect(portfolio.start_date).to(eq(result))
         end
@@ -68,7 +70,7 @@ module LarvataGantt
 
         result = JSON.parse(portfolio.to_json).keys
 
-        expect(result).to include(*required_keys)
+        expect(result).to(include(*required_keys))
       end
     end
   end
