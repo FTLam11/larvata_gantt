@@ -60,5 +60,16 @@ module LarvataGantt
       expect(first_task.links).to(include(link))
       expect(second_task.links).to(include(link))
     end
+
+    describe '#as_json' do
+      it 'has the required keys' do
+        required_keys = %w(id text details parent progress start_date end_date type owner_id owner_name_en priority)
+        task = create(:task)
+
+        result = JSON.parse(task.to_json).keys
+
+        expect(result).to(include(*required_keys))
+      end
+    end
   end
 end

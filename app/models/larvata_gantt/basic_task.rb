@@ -4,6 +4,10 @@ module LarvataGantt
 
     belongs_to :portfolio, foreign_key: 'larvata_gantt_portfolio_id'
     belongs_to :owner, class_name: LarvataGantt.owner_class.to_s, foreign_key: 'user_id', optional: true
+    has_many :source_links, class_name: 'Link', foreign_key: :source_id, dependent: :delete_all
+    has_many :sources, through: :source_links
+    has_many :target_links, class_name: 'Link', foreign_key: :target_id, dependent: :delete_all
+    has_many :targets, through: :target_links
 
     validates_presence_of :sort_order, :text, :larvata_gantt_portfolio_id
     validates :text, length: { maximum: 255 }
@@ -16,6 +20,7 @@ module LarvataGantt
 
     def initialize(attrs = {})
       super(attrs)
+      self.sort_order = (self.class.where(portfolio: portfolio).maximum(:sort_order) || 0) + 1
       post_initialize(attrs)
     end
 
@@ -47,6 +52,17 @@ module LarvataGantt
       Link.where("source_id = ? OR target_id = ?", id, id)
     end
 
+    def as_json(*)
+      super(only: [:id, :text, :details, :parent]).tap do |hash|
+        hash[:progress] = progress.to_f
+        hash[:start_date] = start_date&.to_s(:f)
+        hash[:end_date] = end_date&.to_s(:f)
+        hash[:type] = typing
+        hash[:owner_id] = 1
+        hash[:owner_name_en] = 'Ruby'
+        hash[:priority] = priority.capitalize
+      end
+    end
 
     def post_initialize(*)
       nil
