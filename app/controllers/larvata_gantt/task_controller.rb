@@ -2,8 +2,6 @@ require_dependency "larvata_gantt/application_controller"
 
 module LarvataGantt
   class TaskController < ApplicationController
-    before_action :set_task, only: [:destroy]
-
     def create
       task = TaskFactory.build(task_params)
 
@@ -21,12 +19,12 @@ module LarvataGantt
         BasicTask.reorder(task, task_params[:target])
         render json: { action: "updated" }
       else
-        render json: { action: "error", message: @task.errors.full_messages }, status: 400
+        render json: { action: "error", message: task.errors.full_messages }, status: 400
       end
     end
 
     def destroy
-      @task.destroy
+      BasicTask.find(params[:id]).destroy
       render json: { action: "deleted" }
     end
 
@@ -35,10 +33,6 @@ module LarvataGantt
     def task_params
       params.permit(:id, :larvata_gantt_portfolio_id, :text, :start_date, :end_date,
         :priority, :progress, :parent, :type, :target, :details)
-    end
-
-    def set_task
-      @task = BasicTask.find(params[:id])
     end
   end
 end
