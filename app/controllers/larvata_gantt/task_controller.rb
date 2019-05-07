@@ -4,6 +4,15 @@ module LarvataGantt
   class TaskController < ApplicationController
     before_action :set_task, only: [:destroy]
 
+    def create
+      task = TaskFactory.build(task_params)
+
+      if task.save
+        render json: { action: "inserted", tid: task.id }, status: 201
+      else
+        render json: { action: "error", message: task.errors.full_messages }, status: 400
+      end
+    end
 
     def update
       task = TaskFactory.update(task_params)
