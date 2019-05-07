@@ -31,6 +31,8 @@ FactoryBot.define do
     parent: :basic_task, aliases: [:milestone] do
     typing { 2 }
     text { '50 percent check in' }
+    end_date { 1.week.from_now }
+    start_date { generate(:started_at) }
   end
 
   factory :larvata_gantt_meeting, class: LarvataGantt::Meeting,
@@ -38,5 +40,7 @@ FactoryBot.define do
     typing { 3 }
     text { 'Pointless meeting' }
     details { 'Blah blah blah' }
+    end_date { 1.week.from_now }
+    start_date { generate(:started_at) }
   end
 end
