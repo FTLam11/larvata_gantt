@@ -23,4 +23,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-rails"
   spec.add_development_dependency "factory_bot_rails"
   spec.add_development_dependency "rails-controller-testing"
+  spec.add_development_dependency "awesome_print"
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "pry-byebug"
+  spec.add_development_dependency "pry-rails"
 end

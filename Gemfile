@@ -17,13 +17,6 @@ gemspec
 gem 'dotenv-rails'
 gem 'bootsnap', require: false
 
-group :development, :test do
-  gem 'awesome_print'
-  gem 'pry'
-  gem 'pry-byebug'
-  gem 'pry-rails'
-end
-
 group :development do
   gem 'spring'
   gem 'spring-commands-rspec'
