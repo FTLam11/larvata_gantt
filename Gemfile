@@ -14,7 +14,6 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'activerecord-import'
 gem 'dotenv-rails'
 gem 'bootsnap', require: false
 
@@ -23,13 +22,10 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-rails'
-  gem 'rspec-rails'
-  gem 'factory_bot_rails'
 end
 
 group :test do
   gem 'faker'
-  gem 'rails-controller-testing'
 end
 
 group :development do

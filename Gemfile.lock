@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     larvata_gantt (0.1.0)
+      activerecord-import
       rails (~> 5.2.2)
 
 GEM
@@ -173,7 +174,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-import
   awesome_print
   bootsnap
   dotenv-rails

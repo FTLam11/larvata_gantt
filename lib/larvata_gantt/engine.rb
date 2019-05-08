@@ -1,3 +1,6 @@
+require 'activerecord-import'
+require 'factory_bot_rails' if Rails.env.test?
+
 module LarvataGantt
   class Engine < ::Rails::Engine
     isolate_namespace LarvataGantt
