@@ -16,8 +16,3 @@ gemspec
 
 gem 'dotenv-rails'
 gem 'bootsnap', require: false
-
-group :development do
-  gem 'spring'
-  gem 'spring-commands-rspec'
-end

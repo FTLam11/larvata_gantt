@@ -27,4 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "pry-rails"
+  spec.add_development_dependency "spring"
+  spec.add_development_dependency "spring-commands-rspec"
 end
