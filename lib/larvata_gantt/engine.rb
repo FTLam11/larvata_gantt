@@ -5,6 +5,10 @@ module LarvataGantt
   class Engine < ::Rails::Engine
     isolate_namespace LarvataGantt
 
+    config.to_prepare do
+      Dir.glob('app/decorators/**/*_decorator.rb').each { |c| require_dependency(c) }
+    end
+
     config.generators do |g|
       g.test_framework :rspec
       g.fixture_replacement :factory_bot
