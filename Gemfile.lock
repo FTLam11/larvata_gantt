@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    larvata_gantt (0.1.0)
+    larvata_gantt (0.1.1)
       activerecord-import
       rails (~> 5.1.4)
 
