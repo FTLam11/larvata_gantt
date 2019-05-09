@@ -6,7 +6,7 @@ module LarvataGantt
     isolate_namespace LarvataGantt
 
     config.to_prepare do
-      Dir.glob('./app/decorators/**/*_decorator.rb').each { |c| require_dependency(c) }
+      LarvataGantt.entity_class.send(:include, LarvataGantt::EntityDecorator)
     end
 
     config.generators do |g|
