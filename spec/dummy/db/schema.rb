@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190509021206) do
+ActiveRecord::Schema.define(version: 20190509021736) do
 
   create_table "entities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "name", null: false
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20190509021206) do
   end
 
   create_table "larvata_gantt_tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.bigint "entity_id"
     t.bigint "user_id"
     t.integer "sort_order", default: 0, null: false
     t.string "parent"
@@ -41,6 +42,7 @@ ActiveRecord::Schema.define(version: 20190509021206) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "details"
+    t.index ["entity_id"], name: "index_larvata_gantt_tasks_on_entity_id"
     t.index ["user_id"], name: "index_larvata_gantt_tasks_on_user_id"
   end
 
@@ -52,5 +54,6 @@ ActiveRecord::Schema.define(version: 20190509021206) do
 
   add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "source_id"
   add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "target_id"
+  add_foreign_key "larvata_gantt_tasks", "entities"
   add_foreign_key "larvata_gantt_tasks", "users"
 end
