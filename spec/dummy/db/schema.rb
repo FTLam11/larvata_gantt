@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_094129) do
+ActiveRecord::Schema.define(version: 20190509021736) do
 
-  create_table "entities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "entities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "larvata_gantt_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "larvata_gantt_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "source_id", null: false
     t.bigint "target_id", null: false
     t.integer "typing", default: 0, null: false
@@ -28,16 +28,8 @@ ActiveRecord::Schema.define(version: 2019_05_06_094129) do
     t.index ["typing"], name: "index_larvata_gantt_links_on_typing"
   end
 
-  create_table "larvata_gantt_portfolios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "larvata_gantt_tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.bigint "entity_id"
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["entity_id"], name: "index_larvata_gantt_portfolios_on_entity_id"
-  end
-
-  create_table "larvata_gantt_tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "larvata_gantt_portfolio_id"
     t.bigint "user_id"
     t.integer "sort_order", default: 0, null: false
     t.string "parent"
@@ -50,11 +42,11 @@ ActiveRecord::Schema.define(version: 2019_05_06_094129) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "details"
-    t.index ["larvata_gantt_portfolio_id"], name: "index_larvata_gantt_tasks_on_larvata_gantt_portfolio_id"
+    t.index ["entity_id"], name: "index_larvata_gantt_tasks_on_entity_id"
     t.index ["user_id"], name: "index_larvata_gantt_tasks_on_user_id"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -62,7 +54,6 @@ ActiveRecord::Schema.define(version: 2019_05_06_094129) do
 
   add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "source_id"
   add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "target_id"
-  add_foreign_key "larvata_gantt_portfolios", "entities"
-  add_foreign_key "larvata_gantt_tasks", "larvata_gantt_portfolios"
+  add_foreign_key "larvata_gantt_tasks", "entities"
   add_foreign_key "larvata_gantt_tasks", "users"
 end

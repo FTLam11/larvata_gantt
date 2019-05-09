@@ -6,52 +6,52 @@ module LarvataGantt
       let(:headers) { { 'ACCEPT': 'application/json' } }
 
       it 'creates a task' do
-        portfolio = create(:portfolio)
+        entity = create(:entity)
         params = { start_date: '2019-04-09', text: 'Buy toilet paper', end_date: '2019-04-14',
-                   progress: 0, parent: 0, type: 'task', priority: 'High', larvata_gantt_portfolio_id: portfolio.id }
+                   progress: 0, parent: 0, type: 'task', priority: 'High', entity_id: entity.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
         body_content = JSON.parse(response.body)
-        created_task = portfolio.tasks.last
+        created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
       end
 
       it 'creates a project' do
-        portfolio = create(:portfolio)
-        params = { text: 'The jets', progress: 0, parent: 0, type: 'project', larvata_gantt_portfolio_id: portfolio.id }
+        entity = create(:entity)
+        params = { text: 'The jets', progress: 0, parent: 0, type: 'project', entity_id: entity.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
         body_content = JSON.parse(response.body)
-        created_task = portfolio.tasks.last
+        created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
       end
 
       it 'creates a meeting' do
-        portfolio = create(:portfolio)
+        entity = create(:entity)
         params = { start_date: '2019-04-09', text: 'Meeting about nothing', end_date: '2019-04-12', parent: 0,
-                   details: 'Blah blah blah', type: 'meeting', larvata_gantt_portfolio_id: portfolio.id }
+                   details: 'Blah blah blah', type: 'meeting', entity_id: entity.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
         body_content = JSON.parse(response.body)
-        created_task = portfolio.tasks.last
+        created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
       end
 
       it 'creates a milestone' do
-        portfolio = create(:portfolio)
+        entity = create(:entity)
         params = { start_date: '2019-04-12', text: '50% building milestone',
                    end_date: '2019-04-12', progress: 0, parent: 0, type: 'milestone',
-                   larvata_gantt_portfolio_id: portfolio.id }
+                   entity_id: entity.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
         body_content = JSON.parse(response.body)
-        created_task = portfolio.tasks.last
+        created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
@@ -116,9 +116,9 @@ module LarvataGantt
 
       context 'with task ordering' do
         it 'can insert a task before a target task' do
-          portfolio = create(:portfolio)
-          target_task = create(:task, portfolio: portfolio, sort_order: 1)
-          current_task = create(:task, portfolio: portfolio, sort_order: 2)
+          entity = create(:entity)
+          target_task = create(:task, entity: entity, sort_order: 1)
+          current_task = create(:task, entity: entity, sort_order: 2)
           params = { start_date: '2019-04-09', text: 'New task text', end_date: '2019-04-14',
                      progress: 0, parent: 0, type: 'task', priority: 'High', target: target_task.id }
 
@@ -133,9 +133,9 @@ module LarvataGantt
         end
 
         it 'can insert a task after a target task' do
-          portfolio = create(:portfolio)
-          current_task = create(:task, portfolio: portfolio, sort_order: 1)
-          target_task = create(:task, portfolio: portfolio, sort_order: 2)
+          entity = create(:entity)
+          current_task = create(:task, entity: entity, sort_order: 1)
+          target_task = create(:task, entity: entity, sort_order: 2)
           params = { start_date: '2019-04-09', text: 'New task text', end_date: '2019-04-14',
                      progress: 0, parent: 0, type: 'task', priority: 'High', target: "next:#{target_task.id}" }
 

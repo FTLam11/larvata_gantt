@@ -1,5 +1,7 @@
-# Override the belongs_to class for Portfolio here
+# Override the belongs_to class for Entity
 LarvataGantt.entity_class = 'Entity'
+
+# Override belongs_to class for Task
 LarvataGantt.owner_class = 'User'
 
 # Add custom datetime format

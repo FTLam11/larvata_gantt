@@ -2,14 +2,14 @@ module LarvataGantt
   class BasicTask < ApplicationRecord
     self.table_name = 'larvata_gantt_tasks'
 
-    belongs_to :portfolio, foreign_key: 'larvata_gantt_portfolio_id'
+    belongs_to :entity, class_name: LarvataGantt.entity_class.to_s, foreign_key: 'entity_id'
     belongs_to :owner, class_name: LarvataGantt.owner_class.to_s, foreign_key: 'user_id', optional: true
     has_many :source_links, class_name: 'Link', foreign_key: :source_id, dependent: :delete_all
     has_many :sources, through: :source_links
     has_many :target_links, class_name: 'Link', foreign_key: :target_id, dependent: :delete_all
     has_many :targets, through: :target_links
 
-    validates_presence_of :sort_order, :text, :larvata_gantt_portfolio_id
+    validates_presence_of :sort_order, :text, :entity_id
     validates :text, length: { maximum: 255 }
     validates :sort_order, numericality: { greater_than_or_equal_to: 0 }
 
@@ -20,7 +20,7 @@ module LarvataGantt
 
     def initialize(attrs = {})
       super(attrs)
-      self.sort_order = (self.class.where(portfolio: portfolio).maximum(:sort_order) || 0) + 1
+      self.sort_order = (self.class.where(entity: entity).maximum(:sort_order) || 0) + 1
       post_initialize(attrs)
     end
 
