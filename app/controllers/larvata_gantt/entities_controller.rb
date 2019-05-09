@@ -1,70 +1,31 @@
 require_dependency "larvata_gantt/application_controller"
 
 module LarvataGantt
-  class PortfoliosController < ApplicationController
-    before_action :set_portfolio, only: [:show, :update, :destroy]
-
+  class EntitiesController < ApplicationController
     def index
       respond_to do |format|
         format.html
         format.json do
-          render json: { portfolios: Portfolio.fully_scoped.map { |portfolio| serialize(portfolio) } }
-        end
-      end
-    end
-
-    def create
-      respond_to do |format|
-        format.json do
-          portfolio = Portfolio.create(portfolio_params)
-          render json: { message: '成功儲存', portfolio: serialize(portfolio) }, status: 201
+          render json: { entities: LarvataGantt.entity_class.all.map { |entity| serialize(entity) } }
         end
       end
     end
 
     def show
+      entity = LarvataGantt.entity_class.find(params[:id])
+
       respond_to do |format|
         format.html { render :index }
-        format.json { render json: @portfolio }
-      end
-    end
-
-    def update
-      respond_to do |format|
-        format.json do
-          @portfolio.update(portfolio_params)
-          render json: { message: '成功更新', portfolio: serialize(@portfolio) }
-        end
-      end
-    end
-
-    def destroy
-      respond_to do |format|
-        format.json do
-          @portfolio.destroy
-          head :no_content
-        end
+        format.json { render json: entity }
       end
     end
 
     private
 
-    def set_portfolio
-      @portfolio = Portfolio.find(params[:id])
-    end
-
-    def portfolio_params
-      params.require(:portfolio).permit(:entity_id, :name)
-    end
-
-    def serialize(portfolio)
+    def serialize(entity)
       {
-        id: portfolio.id,
-        name: portfolio.name,
-        entity_name: portfolio.entity.name,
-        entity_id: portfolio.entity.id,
-        task_count: portfolio.tasks.size,
-        start_date: portfolio.start_date,
+        id: entity.id,
+        name: entity.name,
       }
     end
   end

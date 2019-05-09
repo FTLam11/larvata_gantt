@@ -4,10 +4,10 @@ module LarvataGantt
   RSpec.describe(BasicTask, type: :model) do
     let(:invalid_length_min) { 256 }
 
-    it 'belongs to a portfolio' do
+    it 'belongs to a entity' do
       task = build(:task)
 
-      expect(task.portfolio).to_not(be(nil))
+      expect(task.entity).to_not(be(nil))
     end
 
     it 'may be owner-less' do

@@ -2,7 +2,7 @@ FactoryBot.define do
   sequence(:started_at) { |n| n.days.ago }
 
   factory :larvata_gantt_basic_task, class: LarvataGantt::BasicTask, aliases: [:basic_task] do
-    portfolio
+    entity
     owner { nil }
     sort_order { 1 }
     parent { nil }

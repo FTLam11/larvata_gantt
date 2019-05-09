@@ -31,7 +31,7 @@ module LarvataGantt
     private
 
     def task_params
-      params.permit(:id, :larvata_gantt_portfolio_id, :text, :start_date, :end_date,
+      params.permit(:id, :entity_id, :text, :start_date, :end_date,
         :priority, :progress, :parent, :type, :target, :details)
     end
   end
