@@ -1,4 +1,4 @@
-class CreateLarvataGanttTasks < ActiveRecord::Migration[5.2]
+class CreateLarvataGanttTasks < ActiveRecord::Migration[5.1]
   def change
     create_table :larvata_gantt_tasks do |t|
       t.references :larvata_gantt_portfolio, foreign_key: true

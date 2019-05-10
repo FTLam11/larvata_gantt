@@ -1,4 +1,4 @@
-class CreateLarvataGanttLinks < ActiveRecord::Migration[5.2]
+class CreateLarvataGanttLinks < ActiveRecord::Migration[5.1]
   def change
     create_table :larvata_gantt_links do |t|
       t.bigint :source_id, foreign_key: true, null: false

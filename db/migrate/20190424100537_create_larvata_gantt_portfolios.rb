@@ -1,4 +1,4 @@
-class CreateLarvataGanttPortfolios < ActiveRecord::Migration[5.2]
+class CreateLarvataGanttPortfolios < ActiveRecord::Migration[5.1]
   def change
     create_table :larvata_gantt_portfolios do |t|
       t.references LarvataGantt.entity_class.table_name.singularize.to_sym, foreign_key: true
