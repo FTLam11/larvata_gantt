@@ -1,6 +1,6 @@
 module LarvataGantt
   class TaskFactory
-    BASE = %w(text entity_id typing parent).freeze
+    BASE = %W(text #{LarvataGantt.entity_fk} typing parent).freeze
     SPEC = {
       "project"   => %w(priority progress),
       "task"      => %w(priority progress start_date end_date),

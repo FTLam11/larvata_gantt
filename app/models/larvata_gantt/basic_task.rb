@@ -2,14 +2,14 @@ module LarvataGantt
   class BasicTask < ApplicationRecord
     self.table_name = 'larvata_gantt_tasks'
 
-    belongs_to :entity, class_name: LarvataGantt.entity_class.to_s, foreign_key: 'entity_id'
-    belongs_to :owner, class_name: LarvataGantt.owner_class.to_s, foreign_key: 'user_id', optional: true
+    belongs_to :entity, class_name: LarvataGantt.entity_class.to_s, foreign_key: LarvataGantt.entity_fk
+    belongs_to :owner, class_name: LarvataGantt.owner_class.to_s, foreign_key: LarvataGantt.owner_fk, optional: true
     has_many :source_links, class_name: 'Link', foreign_key: :source_id, dependent: :delete_all
     has_many :sources, through: :source_links
     has_many :target_links, class_name: 'Link', foreign_key: :target_id, dependent: :delete_all
     has_many :targets, through: :target_links
 
-    validates_presence_of :sort_order, :text, :entity_id
+    validates_presence_of :sort_order, :text
     validates :text, length: { maximum: 255 }
     validates :sort_order, numericality: { greater_than_or_equal_to: 0 }
 
