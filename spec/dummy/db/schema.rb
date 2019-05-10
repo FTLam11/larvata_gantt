@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190509021736) do
+ActiveRecord::Schema.define(version: 20190430015055) do
 
   create_table "entities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.string "name", null: false
@@ -38,10 +38,10 @@ ActiveRecord::Schema.define(version: 20190509021736) do
     t.decimal "progress", precision: 3, scale: 2, default: "0.0", null: false
     t.datetime "end_date"
     t.datetime "start_date"
-    t.string "text", null: false
+    t.text "text"
+    t.text "details"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "details"
     t.index ["entity_id"], name: "index_larvata_gantt_tasks_on_entity_id"
     t.index ["user_id"], name: "index_larvata_gantt_tasks_on_user_id"
   end
