@@ -52,8 +52,8 @@ ActiveRecord::Schema.define(version: 20190430015055) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "source_id"
-  add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "target_id"
+  add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "source_id", on_delete: :cascade
+  add_foreign_key "larvata_gantt_links", "larvata_gantt_tasks", column: "target_id", on_delete: :cascade
   add_foreign_key "larvata_gantt_tasks", "entities"
   add_foreign_key "larvata_gantt_tasks", "users"
 end

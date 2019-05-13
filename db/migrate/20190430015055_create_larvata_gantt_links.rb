@@ -11,7 +11,7 @@ class CreateLarvataGanttLinks < ActiveRecord::Migration[5.1]
     add_index :larvata_gantt_links, :source_id
     add_index :larvata_gantt_links, :target_id
 
-    add_foreign_key :larvata_gantt_links, :larvata_gantt_tasks, column: :source_id
-    add_foreign_key :larvata_gantt_links, :larvata_gantt_tasks, column: :target_id
+    add_foreign_key :larvata_gantt_links, :larvata_gantt_tasks, column: :source_id, on_delete: :cascade
+    add_foreign_key :larvata_gantt_links, :larvata_gantt_tasks, column: :target_id, on_delete: :cascade
   end
 end
