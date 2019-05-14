@@ -16,3 +16,4 @@ gemspec
 
 gem 'dotenv-rails'
 gem 'bootsnap', require: false
+gem 'rails-erd', group: :development
