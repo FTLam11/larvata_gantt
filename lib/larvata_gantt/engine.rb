@@ -6,7 +6,7 @@ module LarvataGantt
     isolate_namespace LarvataGantt
 
     config.to_prepare do
-      LarvataGantt.entity_class.send(:include, LarvataGantt::EntityDecorator)
+      LarvataGantt.entity_class.include(LarvataGantt::EntityDecorator)
     end
 
     config.generators do |g|
