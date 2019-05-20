@@ -23,7 +23,7 @@ module LarvataGantt
           response_keys = %w(id name)
 
           get '/larvata_gantt/entities', headers: headers
-          body_content_keys = JSON.parse(response.body)["entities"].first.keys
+          body_content_keys = body_content["entities"].first.keys
 
           expect(response.status).to(eq(200))
           expect(response.content_type).to(eq('application/json'))
@@ -51,7 +51,7 @@ module LarvataGantt
           response_keys = %w(id name data links)
 
           get "/larvata_gantt/entities/#{entity.id}", headers: headers
-          body_content_keys = JSON.parse(response.body).keys
+          body_content_keys = body_content.keys
 
           expect(response.status).to(eq(200))
           expect(response.content_type).to(eq('application/json'))

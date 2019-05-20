@@ -11,7 +11,6 @@ module LarvataGantt
                    progress: 0, parent: 0, type: 'task', priority: 'High', entity_id: entity.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
-        body_content = JSON.parse(response.body)
         created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
@@ -23,7 +22,6 @@ module LarvataGantt
         params = { text: 'The jets', progress: 0, parent: 0, type: 'project', entity_id: entity.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
-        body_content = JSON.parse(response.body)
         created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
@@ -36,7 +34,6 @@ module LarvataGantt
                    details: 'Blah blah blah', type: 'meeting', entity_id: entity.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
-        body_content = JSON.parse(response.body)
         created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
@@ -50,7 +47,6 @@ module LarvataGantt
                    entity_id: entity.id }
 
         post '/larvata_gantt/task', params: params, headers: headers
-        body_content = JSON.parse(response.body)
         created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
@@ -65,7 +61,6 @@ module LarvataGantt
                    progress: 0, parent: 0, type: 'task', priority: 'High' }
 
         patch "/larvata_gantt/task/#{task.id}", params: params, headers: headers
-        body_content = JSON.parse(response.body)
 
         expect(task.reload.text).to(eq(params[:text]))
         expect(response.status).to(eq(200))
@@ -78,7 +73,6 @@ module LarvataGantt
         params = { text: 'The jets', progress: 0, parent: 0, type: 'project' }
 
         patch "/larvata_gantt/task/#{project.id}", params: params, headers: headers
-        body_content = JSON.parse(response.body)
 
         expect(project.reload.text).to(eq(params[:text]))
         expect(response.status).to(eq(200))
@@ -92,7 +86,6 @@ module LarvataGantt
                    details: 'Blah blah blah', type: 'meeting' }
 
         patch "/larvata_gantt/task/#{meeting.id}", params: params, headers: headers
-        body_content = JSON.parse(response.body)
 
         expect(meeting.reload.text).to(eq(params[:text]))
         expect(response.status).to(eq(200))
@@ -106,7 +99,6 @@ module LarvataGantt
                    end_date: '2019-04-12', progress: 0, parent: 0, type: 'milestone' }
 
         patch "/larvata_gantt/task/#{milestone.id}", params: params, headers: headers
-        body_content = JSON.parse(response.body)
 
         expect(milestone.reload.text).to(eq(params[:text]))
         expect(response.status).to(eq(200))
@@ -123,7 +115,6 @@ module LarvataGantt
                      progress: 0, parent: 0, type: 'task', priority: 'High', target: target_task.id }
 
           patch "/larvata_gantt/task/#{current_task.id}", headers: headers, params: params, as: :json
-          body_content = JSON.parse(response.body)
 
           expect(current_task.reload.sort_order).to(eq(1))
           expect(target_task.reload.sort_order).to(eq(2))
@@ -140,7 +131,6 @@ module LarvataGantt
                      progress: 0, parent: 0, type: 'task', priority: 'High', target: "next:#{target_task.id}" }
 
           patch "/larvata_gantt/task/#{current_task.id}", headers: headers, params: params, as: :json
-          body_content = JSON.parse(response.body)
 
           expect(current_task.reload.sort_order).to(eq(3))
           expect(target_task.reload.sort_order).to(eq(2))
@@ -156,7 +146,6 @@ module LarvataGantt
         task = create(:task)
 
         delete "/larvata_gantt/task/#{task.id}", headers: headers
-        body_content = JSON.parse(response.body)
 
         expect { task.reload }.to(raise_error(ActiveRecord::RecordNotFound))
         expect(response.status).to(eq(200))
