@@ -2,8 +2,6 @@ require 'rails_helper'
 
 module LarvataGantt
   RSpec.describe(EntitiesController, type: :request) do
-    let(:headers) { { 'ACCEPT': 'application/json' } }
-
     describe 'GET entities#index' do
       context 'when requesting html' do
         it 'renders the entity index' do
@@ -22,7 +20,7 @@ module LarvataGantt
           create(:entity_with_tasks)
           response_keys = %w(id name)
 
-          get '/larvata_gantt/entities', headers: headers
+          get '/larvata_gantt/entities', as: :json
           body_content_keys = body_content["entities"].first.keys
 
           expect(response.status).to(eq(200))
@@ -50,7 +48,7 @@ module LarvataGantt
           entity = create(:entity_with_tasks)
           response_keys = %w(id name data links)
 
-          get "/larvata_gantt/entities/#{entity.id}", headers: headers
+          get "/larvata_gantt/entities/#{entity.id}", as: :json
           body_content_keys = body_content.keys
 
           expect(response.status).to(eq(200))
