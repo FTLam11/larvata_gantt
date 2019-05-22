@@ -8,7 +8,7 @@ module LarvataGantt
         params = { start_date: '2019-04-09', text: 'Buy toilet paper', end_date: '2019-04-14',
                    progress: 0, parent: 0, type: 'task', priority: 'High', entity_id: entity.id }
 
-        post '/larvata_gantt/task', params: params, as: :json
+        post task_index_path, params: params, as: :json
         created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
@@ -19,7 +19,7 @@ module LarvataGantt
         entity = create(:entity)
         params = { text: 'The jets', progress: 0, parent: 0, type: 'project', entity_id: entity.id }
 
-        post '/larvata_gantt/task', params: params, as: :json
+        post task_index_path, params: params, as: :json
         created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
@@ -31,7 +31,7 @@ module LarvataGantt
         params = { start_date: '2019-04-09', text: 'Meeting about nothing', end_date: '2019-04-12', parent: 0,
                    details: 'Blah blah blah', type: 'meeting', entity_id: entity.id }
 
-        post '/larvata_gantt/task', params: params, as: :json
+        post task_index_path, params: params, as: :json
         created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
@@ -44,7 +44,7 @@ module LarvataGantt
                    end_date: '2019-04-12', progress: 0, parent: 0, type: 'milestone',
                    entity_id: entity.id }
 
-        post '/larvata_gantt/task', params: params, as: :json
+        post task_index_path, params: params, as: :json
         created_task = entity.tasks.last
 
         expect(response.status).to(eq(201))
@@ -58,7 +58,7 @@ module LarvataGantt
         params = { start_date: '2019-04-09', text: 'New task text', end_date: '2019-04-14',
                    progress: 0, parent: 0, type: 'task', priority: 'High' }
 
-        patch "/larvata_gantt/task/#{task.id}", params: params, as: :json
+        patch task_path(task), params: params, as: :json
 
         expect(task.reload.text).to(eq(params[:text]))
         expect(response.status).to(eq(200))
@@ -70,7 +70,7 @@ module LarvataGantt
         project = create(:project)
         params = { text: 'The jets', progress: 0, parent: 0, type: 'project' }
 
-        patch "/larvata_gantt/task/#{project.id}", params: params, as: :json
+        patch task_path(project), params: params, as: :json
 
         expect(project.reload.text).to(eq(params[:text]))
         expect(response.status).to(eq(200))
@@ -83,7 +83,7 @@ module LarvataGantt
         params = { start_date: '2019-04-09', text: 'Meeting about nothing', end_date: '2019-04-12', parent: 0,
                    details: 'Blah blah blah', type: 'meeting' }
 
-        patch "/larvata_gantt/task/#{meeting.id}", params: params, as: :json
+        patch task_path(meeting), params: params, as: :json
 
         expect(meeting.reload.text).to(eq(params[:text]))
         expect(response.status).to(eq(200))
@@ -96,7 +96,7 @@ module LarvataGantt
         params = { start_date: '2019-04-12', text: '50% building milestone',
                    end_date: '2019-04-12', progress: 0, parent: 0, type: 'milestone' }
 
-        patch "/larvata_gantt/task/#{milestone.id}", params: params, as: :json
+        patch task_path(milestone), params: params, as: :json
 
         expect(milestone.reload.text).to(eq(params[:text]))
         expect(response.status).to(eq(200))
@@ -112,7 +112,7 @@ module LarvataGantt
           params = { start_date: '2019-04-09', text: 'New task text', end_date: '2019-04-14',
                      progress: 0, parent: 0, type: 'task', priority: 'High', target: target_task.id }
 
-          patch "/larvata_gantt/task/#{current_task.id}", params: params, as: :json
+          patch task_path(current_task), params: params, as: :json
 
           expect(current_task.reload.sort_order).to(eq(1))
           expect(target_task.reload.sort_order).to(eq(2))
@@ -128,7 +128,7 @@ module LarvataGantt
           params = { start_date: '2019-04-09', text: 'New task text', end_date: '2019-04-14',
                      progress: 0, parent: 0, type: 'task', priority: 'High', target: "next:#{target_task.id}" }
 
-          patch "/larvata_gantt/task/#{current_task.id}", params: params, as: :json
+          patch task_path(current_task), params: params, as: :json
 
           expect(current_task.reload.sort_order).to(eq(3))
           expect(target_task.reload.sort_order).to(eq(2))
@@ -143,7 +143,7 @@ module LarvataGantt
       it 'destroys a task' do
         task = create(:task)
 
-        delete "/larvata_gantt/task/#{task.id}", as: :json
+        delete task_path(task), as: :json
 
         expect { task.reload }.to(raise_error(ActiveRecord::RecordNotFound))
         expect(response.status).to(eq(200))

@@ -6,4 +6,5 @@ end
 
 RSpec.configure do |config|
   config.include RequestHelper, type: :request
+  config.include LarvataGantt::Engine.routes.url_helpers
 end

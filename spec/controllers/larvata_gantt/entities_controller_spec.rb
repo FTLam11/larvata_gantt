@@ -7,7 +7,7 @@ module LarvataGantt
         it 'renders the entity index' do
           create(:entity_with_tasks)
 
-          get '/larvata_gantt/entities'
+          get entities_path
 
           expect(response).to(render_template(:index))
           expect(response.status).to(eq(200))
@@ -20,7 +20,7 @@ module LarvataGantt
           create(:entity_with_tasks)
           response_keys = %w(id name)
 
-          get '/larvata_gantt/entities', as: :json
+          get entities_path, as: :json
           body_content_keys = body_content["entities"].first.keys
 
           expect(response.status).to(eq(200))
@@ -33,9 +33,9 @@ module LarvataGantt
     describe 'GET #show' do
       context 'when requesting html' do
         it 'renders the entity index' do
-          create(:entity_with_tasks)
+          entity = create(:entity_with_tasks)
 
-          get '/larvata_gantt/entities'
+          get entity_path(entity)
 
           expect(response).to(render_template(:index))
           expect(response.status).to(eq(200))
@@ -48,7 +48,7 @@ module LarvataGantt
           entity = create(:entity_with_tasks)
           response_keys = %w(id name data links)
 
-          get "/larvata_gantt/entities/#{entity.id}", as: :json
+          get entity_path(entity), as: :json
           body_content_keys = body_content.keys
 
           expect(response.status).to(eq(200))

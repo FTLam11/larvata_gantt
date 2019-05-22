@@ -9,7 +9,7 @@ module LarvataGantt
           task = create(:task)
           params = { source: project.id, target: task.id, type: Link.typings[:finish_to_finish].to_s }
 
-          post '/larvata_gantt/link', params: params
+          post link_index_path, params: params
           created_link = Link.where(source: project, target: task, typing: params[:type]).last
 
           expect(response.status).to(eq(201))
@@ -23,7 +23,7 @@ module LarvataGantt
           params = { source: task.id, target: task.id, type: Link.typings[:finish_to_finish].to_s }
           link_count = Link.count
 
-          post '/larvata_gantt/link', params: params
+          post link_index_path, params: params
 
           expect(Link.count).to(eq(link_count))
           expect(response.status).to(eq(400))
@@ -39,11 +39,10 @@ module LarvataGantt
         new_target = create(:task)
         params = { source: link.source.id, target: new_target.id, type: Link.typings[:finish_to_finish].to_s }
 
-        patch "/larvata_gantt/link/#{link.id}", params: params
+        patch link_path(link), params: params
 
         expect(link.reload.target.id).to(eq(new_target.id))
         expect(response.status).to(eq(200))
-        expect(response.content_type).to(eq('application/json'))
         expect(body_content['action']).to(eq('updated'))
       end
     end
@@ -52,7 +51,7 @@ module LarvataGantt
       it 'destroys a link' do
         link = create(:link)
 
-        delete "/larvata_gantt/link/#{link.id}"
+        delete link_path(link)
 
         expect { link.reload }.to(raise_error(ActiveRecord::RecordNotFound))
         expect(response.status).to(eq(200))
