@@ -12,7 +12,7 @@ module LarvataGantt
           post link_index_path, params: params
           created_link = Link.where(source: project, target: task, typing: params[:type]).last
 
-          expect(response.status).to(eq(201))
+          expect(response).to(have_http_status(201))
           expect(body_content).to(eq('action' => 'inserted', 'tid' => created_link.id))
         end
       end
@@ -26,7 +26,7 @@ module LarvataGantt
           post link_index_path, params: params
 
           expect(Link.count).to(eq(link_count))
-          expect(response.status).to(eq(400))
+          expect(response).to(have_http_status(400))
           expect(body_content['action']).to(eq('error'))
           expect(body_content['message']).to(include("Target can't be same as source"))
         end
@@ -42,7 +42,7 @@ module LarvataGantt
         patch link_path(link), params: params
 
         expect(link.reload.target.id).to(eq(new_target.id))
-        expect(response.status).to(eq(200))
+        expect(response).to(have_http_status(200))
         expect(body_content['action']).to(eq('updated'))
       end
     end
@@ -54,7 +54,7 @@ module LarvataGantt
         delete link_path(link)
 
         expect { link.reload }.to(raise_error(ActiveRecord::RecordNotFound))
-        expect(response.status).to(eq(200))
+        expect(response).to(have_http_status(200))
         expect(body_content['action']).to(eq('deleted'))
       end
     end

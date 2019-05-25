@@ -10,7 +10,7 @@ module LarvataGantt
           get entities_path
 
           expect(response).to(render_template(:index))
-          expect(response.status).to(eq(200))
+          expect(response).to(have_http_status(200))
           expect(response.content_type).to(eq('text/html'))
         end
       end
@@ -23,7 +23,7 @@ module LarvataGantt
           get entities_path, as: :json
           body_content_keys = body_content["entities"].first.keys
 
-          expect(response.status).to(eq(200))
+          expect(response).to(have_http_status(200))
           expect(response.content_type).to(eq('application/json'))
           expect(body_content_keys).to(include(*response_keys))
         end
@@ -38,7 +38,7 @@ module LarvataGantt
           get entity_path(entity)
 
           expect(response).to(render_template(:index))
-          expect(response.status).to(eq(200))
+          expect(response).to(have_http_status(200))
           expect(response.content_type).to(eq('text/html'))
         end
       end
@@ -51,7 +51,7 @@ module LarvataGantt
           get entity_path(entity), as: :json
           body_content_keys = body_content.keys
 
-          expect(response.status).to(eq(200))
+          expect(response).to(have_http_status(200))
           expect(response.content_type).to(eq('application/json'))
           expect(body_content_keys).to(include(*response_keys))
         end

@@ -11,7 +11,7 @@ module LarvataGantt
         post task_index_path, params: params, as: :json
         created_task = entity.tasks.last
 
-        expect(response.status).to(eq(201))
+        expect(response).to(have_http_status(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
       end
 
@@ -22,7 +22,7 @@ module LarvataGantt
         post task_index_path, params: params, as: :json
         created_task = entity.tasks.last
 
-        expect(response.status).to(eq(201))
+        expect(response).to(have_http_status(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
       end
 
@@ -34,7 +34,7 @@ module LarvataGantt
         post task_index_path, params: params, as: :json
         created_task = entity.tasks.last
 
-        expect(response.status).to(eq(201))
+        expect(response).to(have_http_status(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
       end
 
@@ -47,7 +47,7 @@ module LarvataGantt
         post task_index_path, params: params, as: :json
         created_task = entity.tasks.last
 
-        expect(response.status).to(eq(201))
+        expect(response).to(have_http_status(201))
         expect(body_content).to(eq('action' => 'inserted', 'tid' => created_task.id))
       end
     end
@@ -61,7 +61,7 @@ module LarvataGantt
         patch task_path(task), params: params, as: :json
 
         expect(task.reload.text).to(eq(params[:text]))
-        expect(response.status).to(eq(200))
+        expect(response).to(have_http_status(200))
         expect(response.content_type).to(eq('application/json'))
         expect(body_content['action']).to(eq('updated'))
       end
@@ -73,7 +73,7 @@ module LarvataGantt
         patch task_path(project), params: params, as: :json
 
         expect(project.reload.text).to(eq(params[:text]))
-        expect(response.status).to(eq(200))
+        expect(response).to(have_http_status(200))
         expect(response.content_type).to(eq('application/json'))
         expect(body_content['action']).to(eq('updated'))
       end
@@ -86,7 +86,7 @@ module LarvataGantt
         patch task_path(meeting), params: params, as: :json
 
         expect(meeting.reload.text).to(eq(params[:text]))
-        expect(response.status).to(eq(200))
+        expect(response).to(have_http_status(200))
         expect(response.content_type).to(eq('application/json'))
         expect(body_content['action']).to(eq('updated'))
       end
@@ -99,7 +99,7 @@ module LarvataGantt
         patch task_path(milestone), params: params, as: :json
 
         expect(milestone.reload.text).to(eq(params[:text]))
-        expect(response.status).to(eq(200))
+        expect(response).to(have_http_status(200))
         expect(response.content_type).to(eq('application/json'))
         expect(body_content['action']).to(eq('updated'))
       end
@@ -116,7 +116,7 @@ module LarvataGantt
 
           expect(current_task.reload.sort_order).to(eq(1))
           expect(target_task.reload.sort_order).to(eq(2))
-          expect(response.status).to(eq(200))
+          expect(response).to(have_http_status(200))
           expect(response.content_type).to(eq('application/json'))
           expect(body_content['action']).to(eq('updated'))
         end
@@ -132,7 +132,7 @@ module LarvataGantt
 
           expect(current_task.reload.sort_order).to(eq(3))
           expect(target_task.reload.sort_order).to(eq(2))
-          expect(response.status).to(eq(200))
+          expect(response).to(have_http_status(200))
           expect(response.content_type).to(eq('application/json'))
           expect(body_content['action']).to(eq('updated'))
         end
@@ -146,7 +146,7 @@ module LarvataGantt
         delete task_path(task), as: :json
 
         expect { task.reload }.to(raise_error(ActiveRecord::RecordNotFound))
-        expect(response.status).to(eq(200))
+        expect(response).to(have_http_status(200))
         expect(body_content['action']).to(eq('deleted'))
       end
     end
