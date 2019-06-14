@@ -51,7 +51,7 @@ module LarvataGantt
     describe '::update' do
       it 'delegates update instructions to BasicTask' do
         task = create(:task)
-        new_attrs = { id: task.id, text: 'Dawg', type: 'task' }
+        new_attrs = { id: task.id, type: 'task' }
         allow(BasicTask).to(receive(:update_attrs).with(task.id, TaskFactory.send(:build_attrs_for, new_attrs)))
 
         TaskFactory.update(new_attrs)
@@ -61,7 +61,7 @@ module LarvataGantt
 
       it 'assigns a typing validation error when given a bogus type' do
         task = create(:task)
-        new_attrs = { id: task.id, text: 'Dawg', type: 'crazy type' }
+        new_attrs = { id: task.id, type: 'crazy type' }
 
         task = TaskFactory.update(new_attrs)
 
