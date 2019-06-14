@@ -44,7 +44,7 @@ module LarvataGantt
 
         task = TaskFactory.build(attrs)
 
-        expect(task.errors.full_messages).to(include('Typing crazy type is not a valid typing'))
+        expect(task.errors[:typing].first).to(eq('crazy type is not a valid typing'))
       end
     end
 
@@ -65,7 +65,7 @@ module LarvataGantt
 
         task = TaskFactory.update(new_attrs)
 
-        expect(task.errors.full_messages).to(include('Typing crazy type is not a valid typing'))
+        expect(task.errors[:typing].first).to(eq('crazy type is not a valid typing'))
       end
     end
   end
