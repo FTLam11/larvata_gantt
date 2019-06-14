@@ -6,7 +6,7 @@ module LarvataGantt
       project = create(:project)
       child_task = create(:task, parent: project)
 
-      link = create(:link, source: project, target: child_task)
+      link = build(:link, source: project, target: child_task)
 
       expect(link.source).to(eq(project))
       expect(link.target).to(eq(child_task))
@@ -16,16 +16,26 @@ module LarvataGantt
       project = create(:project)
       child_task = create(:task, parent: project)
 
-      link = create(:link, source: project, target: child_task, lag: 2)
+      link = build(:link, source: project, target: child_task, lag: 2)
 
       expect(link.lag).to(eq(2))
-      expect { create(:link, source: project, target: child_task, lag: -1) }.to(raise_error(ActiveRecord::RecordInvalid))
+    end
+
+    it 'has a valid lag time' do
+      project = create(:project)
+      child_task = create(:task, parent: project)
+
+      link = build(:link, source: project, target: child_task, lag: -1)
+
+      expect(link).to(be_invalid)
     end
 
     it 'can not have identical source and target tasks' do
       project = create(:project)
 
-      expect { create(:link, source: project, target: project) }.to(raise_error(ActiveRecord::RecordInvalid))
+      link = build(:link, source: project, target: project)
+
+      expect(link).to(be_invalid)
     end
 
     describe '#as_json' do
@@ -34,7 +44,7 @@ module LarvataGantt
         project = create(:project)
         child_task = create(:task, parent: project)
 
-        link = create(:link, source: project, target: child_task)
+        link = build(:link, source: project, target: child_task)
         result = JSON.parse(link.to_json).keys
 
         expect(result).to include(*required_keys)

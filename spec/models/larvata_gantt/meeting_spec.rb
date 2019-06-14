@@ -7,16 +7,18 @@ module LarvataGantt
       meeting = build(:meeting, start_date: start_date)
 
       expect(meeting.start_date).to(eq(start_date))
-      expect { create(:meeting, start_date: nil) }.to(raise_error(ActiveRecord::RecordInvalid))
+    end
+
+    it 'has a valid start date' do
+      meeting = build(:meeting, start_date: nil)
+
+      expect(meeting).to(be_invalid)
     end
 
     it 'has a valid end date' do
-      start_date = Time.zone.now
-      end_date = 1.days.ago
+      meeting = build(:meeting, start_date: Time.zone.now, end_date: 1.days.ago)
 
-      expect do
-        create(:meeting, start_date: start_date, end_date: end_date)
-      end.to(raise_error(ActiveRecord::RecordInvalid))
+      expect(meeting).to(be_invalid)
     end
 
     it 'has details' do
